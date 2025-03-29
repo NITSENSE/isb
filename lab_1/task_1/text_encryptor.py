@@ -142,13 +142,15 @@ def main():
 
     Читает аргументы командной строки, шифрует текст и сохраняет результат.
     """
-    paths = arg_parser()
-    text = read_file(paths.path_to_text)
-    key = read_file(paths.path_to_key)
-    print(key)
-    chipertext = encript(text, key)
-    write_file(paths.path_to_ciphertext, chipertext)
-
+    try:
+        paths = arg_parser()
+        text = read_file(paths.path_to_text)
+        key = read_file(paths.path_to_key)
+        print(key)
+        chipertext = encript(text, key)
+        write_file(paths.path_to_ciphertext, chipertext)
+    except Exception as e:
+        raise Exception(f"program error: {e}")
 
 if __name__ == "__main__":
     main()

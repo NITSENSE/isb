@@ -1,0 +1,5 @@
+{
+    "path_to_rus_freg" : "rus_freg.json",
+    "path_to_char_freg" : "char_freg.json",
+    "path_to_freguency_mach" : "freg_match.json"
+}
