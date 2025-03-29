@@ -53,7 +53,7 @@ def arg_parser() -> argparse.Namespace:
     Raises:
         FileNotFoundError: Если файл не найден.
     """
-    parser = argparse.ArgumentParser(description='a program for encrypting messages using the Vigener method')
+    parser = argparse.ArgumentParser(description='The program for encrypting messages using the Vigener method')
     parser.add_argument("path_to_text", type=str, help="the path to the encrypted text")
     parser.add_argument("path_to_key", type=str, help="the path to the encryption key")
     parser.add_argument("path_to_ciphertext", type=str, help="the path to the ciphertext storage location")
