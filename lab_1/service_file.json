@@ -1,0 +1,5 @@
+{
+    "path_to_rus_freg" : "task_2/rus_freg.json",
+    "path_to_char_freg" : "task_2/char_freg.json",
+    "path_to_freguency_mach" : "task_2/freg_match.json"
+}
