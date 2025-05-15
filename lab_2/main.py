@@ -8,11 +8,13 @@ def main():
     java_seq = RandomnessTests(read_file(servis_paths["path_to_java_sequence"]))
     cpp_seq.print_len()
     cpp_seq.print_sequence()
-    print(cpp_seq.frequency_bitwise_test(),"\n") 
+    print(cpp_seq.frequency_test())
+    print(cpp_seq.runs_test(),"\n")
 
     java_seq.print_len()
     java_seq.print_sequence()
-    print(java_seq.frequency_bitwise_test(),"\n") 
+    print(java_seq.frequency_test()) 
+    print(java_seq.runs_test(),"\n") 
 
 if __name__ == "__main__":
     main()
