@@ -98,6 +98,35 @@ def load_rsa_private_key(private_key_path: str) -> rsa.RSAPrivateKey | None:
         raise Exception(f"Unexpected error when uploading an RSA private key: {e}")
 
 
+def load_rsa_public_key(public_key_path: str) -> rsa.RSAPublicKey:
+    """
+    Загружает публичный ключ RSA из PEM-файла.
+
+    Параметры:
+        public_key_path (str): Путь к файлу с публичным ключом.
+
+    Возвращает:
+        RSAPublicKey: Объект публичного ключа RSA.
+
+    Исключения (Raises):
+        FileNotFoundError: Если файл по указанному пути не найден.
+        ValueError: Если данные в файле имеют неверный формат.
+    """
+    public_key_pem = read_file(public_key_path)
+    if public_key_pem is None:
+        raise FileNotFoundError(f"The public key file was not found on the way: {public_key_path}")
+    try:
+        private_key = load_pem_public_key(
+            public_key_pem
+        )
+        print(f"The RSA public key has been successfully uploaded from: {public_key_path}")
+        return private_key
+    except ValueError as e:
+        raise ValueError(f"Error loading the RSA public key: {e}. The format may be incorrect.")
+    except Exception as e: 
+        raise Exception(f"Unexpected error when uploading an RSA public key: {e}")
+
+
 def decrypt_symmetric_key_rsa(encrypted_symmetric_key_path: str, 
                               private_key: rsa.RSAPrivateKey) -> bytes | None:
     """
@@ -135,35 +164,26 @@ if __name__ == '__main__':
     PRIVATE_KEY_PATH = "lab_3/keys/private.pem"
     ENCRYPTED_KEY_PATH = "lab_3/keys/encrypted_sym_key.bin"
 
+
     print("--- ШАГ 1: Генерация и сохранение ключей RSA ---")
-
     priv_key_obj, pub_key_obj = generate_rsa_keys()
-
     serialize_rsa_keys(pub_key_obj, priv_key_obj, PUBLIC_KEY_PATH, PRIVATE_KEY_PATH)
-    
     print("\n--- ШАГ 2: Генерация и шифрование симметричного ключа ---")
-
     original_idea_key = generate_idea_key()
     print(f"Оригинальный ключ IDEA:    {original_idea_key.hex()}")
-
     encrypt_symmetric_key_rsa(original_idea_key, pub_key_obj, ENCRYPTED_KEY_PATH)
-
     print("\n--- ШАГ 3: Загрузка приватного ключа и расшифровка ---")
     try:
-
         loaded_private_key = load_rsa_private_key(PRIVATE_KEY_PATH)
-
         if loaded_private_key:
-         
             decrypted_idea_key = decrypt_symmetric_key_rsa(
                 ENCRYPTED_KEY_PATH, 
                 loaded_private_key
             )
-            print(f"Расшифрованный ключ IDEA: {decrypted_idea_key.hex()}")
-
-          
+            print(f"Расшифрованный ключ IDEA: {decrypted_idea_key.hex()}")         
             assert original_idea_key == decrypted_idea_key
             print("\n[УСПЕХ] Ключи совпадают! Полный цикл шифрования-расшифровки прошел корректно.")
-
     except (FileNotFoundError, ValueError, Exception) as e:
         print(f"\n[ОШИБКА] Произошла ошибка во время выполнения: {e}")
+
+    
